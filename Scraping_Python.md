@@ -5,7 +5,7 @@ Cap. 1
     from urllib.request import urlopen
     html = urlopen("url.html")
     
-   ### Output: ''b'<html>\n<head>\n<title>A Useful Page</title>\n</head>\n<body>\n<h1>An Interesting Title</h1>\n<div>\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui            officia deserunt mollit anim id est laborum.\n</div>\n</body>\n</html>\n''''
+   # Output: b'<html>\n<head>\n<title>A Useful Page</title>\n</head>\n<body>\n<h1>An Interesting Title</h1>\n<div>\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n</div>\n</body>\n</html>\n'
     
    # urllib é uma das bibliotecas mais utilizadas para scrapping: https://docs.python.org/3/library/urllib.html
    ## urlopen abre um objeto remoto em uma rede e o armazena
@@ -13,8 +13,8 @@ Cap. 1
  BeautiSoup:
   Biblioteca que ajuda a formatar e organizar dados não estruturados organizados de maneira confusa ou mal-escritos através da               correção     de "bad HTML files", nos apresentando objetos facilmente legíveis em Python que representam estrutura XML.
     
-    # https://www.crummy.com/software/BeautifulSoup/bs4/doc/
-    ## !pip install beautifulsoup4 - instala o pacote através do Jupyter Notebook
+   # https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+   ## !pip install beautifulsoup4 - instala o pacote através do Jupyter Notebook
       
   O comando mais utilizado na biblioteca deriva da criação de um objeto bs4. Podemos abrir uma página HTML utilizando a biblioteca:
       
@@ -24,8 +24,8 @@ Cap. 1
     bsObj = BeautifulSoup(html.read())
     print(bsObj)
       
-  ### Output: 
-  ''<html>
+  # Output: 
+  <html>
   <head>
   <title>A Useful Page</title>
   </head>
@@ -35,10 +35,38 @@ Cap. 1
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim     ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in   culpa qui officia deserunt mollit anim id est laborum.
   </div>
   </body>
-  </html>''
+  </html>
    
-  Percebe-se a diferença de estrutura entre os dois outputs. Ainda, pelo objeto bs, podemos trazer como output apenas uma parte           específica da página. Ex:o código print(bsObj.h1) retornaria apenas a linha '<h1>An Interesting Title</h1>' como resultado.
+  Percebe-se a diferença de estrutura entre os dois outputs. Ainda, pelo objeto bs, podemos trazer como output apenas uma parte           específica da página. Ex:o código print(bsObj.h1) retornaria apenas a linha <h1>An Interesting Title</h1> como resultado.
   
   Ainda, é possível criar ambientes virtuais através do Python, o que é importante para separar as bibliotecas utilizadas para cada       projeto, facilitando a administração dos mesmo (avitando, inclusive, conflitos entre versões diferentes das bibliotecas).
     
-    
+  Controlando erros e exceções. Quando trabalhamos com scrapping, é possível que muitas páginas retornem erros de conexão ou de servidor   e é preciso controlar tais possibilidade. O código abaixo avalia se:
+  
+  I) A página é encontrada no server (erro HTTP). Se sim, retorna o cógido normalmente, se não, retorna o erro printado na tela
+      try:
+        html = urlopen("http://www.pythonscraping.com/exercises/exercise1.html")
+      except HTTPError as e:
+        print(e)
+        #return null, break, or do some other "Plan B"
+      else:
+        #program continues. Note: If you return or break in the
+        #exception catch, you do not need to use the "else" statement
+  
+  II) Caso o servidor não seja encontrado, a função urlopen retorna um objeto tipo None, podemos controlar tal erro deste modo:
+      if html is None:
+          print("URL is not found")
+        else:
+          #program continues
+  
+  Podemos aplicar a mesma lógica para testar tags específicas de um objeto BS. Se a biblioteca tentar acessar uma tag inexistente na       página html ou XML, a mesma retornará um objeto do tipo None. Se tentarmos aplicar funções ou métodos à este objeto None, receberemos   um "Attribute Error". O código abaixo controla os dois erros:
+      try:
+        badContent = bsObj.nonExistingTag.anotherTag
+      except AttributeError as e:
+        print("Tag was not found")
+      else:
+        if badContent == None:
+          print ("Tag was not found")
+        else:
+          print(badContent)
+
