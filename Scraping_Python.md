@@ -5,7 +5,7 @@ Cap. 1
     from urllib.request import urlopen
     html = urlopen("url.html")
     
-   ### Output: b'<html>\n<head>\n<title>A Useful Page</title>\n</head>\n<body>\n<h1>An Interesting Title</h1>\n<div>\nLorem ipsum dolor      sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in              voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui            officia deserunt mollit anim id est laborum.\n</div>\n</body>\n</html>\n'
+   ### Output: ''b'<html>\n<head>\n<title>A Useful Page</title>\n</head>\n<body>\n<h1>An Interesting Title</h1>\n<div>\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui            officia deserunt mollit anim id est laborum.\n</div>\n</body>\n</html>\n''''
     
    # urllib é uma das bibliotecas mais utilizadas para scrapping: https://docs.python.org/3/library/urllib.html
    ## urlopen abre um objeto remoto em uma rede e o armazena
@@ -25,7 +25,7 @@ Cap. 1
     print(bsObj)
       
   ### Output: 
-  <html>
+  ''<html>
   <head>
   <title>A Useful Page</title>
   </head>
@@ -35,9 +35,9 @@ Cap. 1
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim     ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in   culpa qui officia deserunt mollit anim id est laborum.
   </div>
   </body>
-  </html>
+  </html>''
    
-  Percebe-se a diferença de estrutura entre os dois outputs. Ainda, pelo objeto bs, podemos trazer como output apenas uma parte           específica da página. Ex:o código print(bsObj.h1) retornaria apenas a linha <h1>An Interesting Title</h1> como resultado.
+  Percebe-se a diferença de estrutura entre os dois outputs. Ainda, pelo objeto bs, podemos trazer como output apenas uma parte           específica da página. Ex:o código print(bsObj.h1) retornaria apenas a linha '<h1>An Interesting Title</h1>' como resultado.
   
   Ainda, é possível criar ambientes virtuais através do Python, o que é importante para separar as bibliotecas utilizadas para cada       projeto, facilitando a administração dos mesmo (avitando, inclusive, conflitos entre versões diferentes das bibliotecas).
     
