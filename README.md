@@ -1,2 +1,0 @@
-# teste-repo
-Primeiro repositório
