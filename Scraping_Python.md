@@ -1,7 +1,7 @@
 # Resumo
-
-Cap. 1
-  É preciso fazer um request via código para acessar determinada url. Para tanto, é preciso usar a seguinte estrutura:
+________________________________________________________________________________________________________________________________________
+Cap. 1 - Your First Web Scraper
+  * É preciso fazer um request via código para acessar determinada url. Para tanto, é preciso usar a seguinte estrutura:
     from urllib.request import urlopen
     html = urlopen("url.html")
     
@@ -9,8 +9,8 @@ Cap. 1
     
    # urllib é uma das bibliotecas mais utilizadas para scrapping: https://docs.python.org/3/library/urllib.html
    ## urlopen abre um objeto remoto em uma rede e o armazena
-  
- BeautiSoup:
+_______________________________________________________________________________________________________________________________________ 
+ * BeautiSoup:
   Biblioteca que ajuda a formatar e organizar dados não estruturados organizados de maneira confusa ou mal-escritos através da               correção     de "bad HTML files", nos apresentando objetos facilmente legíveis em Python que representam estrutura XML.
     
    # https://www.crummy.com/software/BeautifulSoup/bs4/doc/
@@ -40,33 +40,30 @@ Cap. 1
   Percebe-se a diferença de estrutura entre os dois outputs. Ainda, pelo objeto bs, podemos trazer como output apenas uma parte           específica da página. Ex:o código print(bsObj.h1) retornaria apenas a linha <h1>An Interesting Title</h1> como resultado.
   
   Ainda, é possível criar ambientes virtuais através do Python, o que é importante para separar as bibliotecas utilizadas para cada       projeto, facilitando a administração dos mesmo (avitando, inclusive, conflitos entre versões diferentes das bibliotecas).
-    
-  Controlando erros e exceções. Quando trabalhamos com scrapping, é possível que muitas páginas retornem erros de conexão ou de servidor   e é preciso controlar tais possibilidade. O código abaixo avalia se:
+________________________________________________________________________________________________________________________________________
+  * Controlando erros e exceções. Quando trabalhamos com scrapping, é possível que muitas páginas retornem erros de conexão ou de servidor   e é preciso controlar tais possibilidade. O código abaixo avalia se:
   
-  I) A página é encontrada no server (erro HTTP). Se sim, retorna o cógido normalmente, se não, retorna o erro printado na tela
-      try:
-        html = urlopen("http://www.pythonscraping.com/exercises/exercise1.html")
-      except HTTPError as e:
-        print(e)
-        #return null, break, or do some other "Plan B"
-      else:
-        #program continues. Note: If you return or break in the
-        #exception catch, you do not need to use the "else" statement
+  I) A página é encontrada no server (erro HTTP). Se sim, retorna o cógido normalmente, se não, retorna o erro printado na tela  
+  II) Caso o servidor não seja encontrado, a função urlopen retorna um objeto tipo None.  
   
-  II) Caso o servidor não seja encontrado, a função urlopen retorna um objeto tipo None, podemos controlar tal erro deste modo:
-      if html is None:
-          print("URL is not found")
-        else:
-          #program continues
-  
-  Podemos aplicar a mesma lógica para testar tags específicas de um objeto BS. Se a biblioteca tentar acessar uma tag inexistente na       página html ou XML, a mesma retornará um objeto do tipo None. Se tentarmos aplicar funções ou métodos à este objeto None, receberemos   um "Attribute Error". O código abaixo controla os dois erros:
-      try:
-        badContent = bsObj.nonExistingTag.anotherTag
-      except AttributeError as e:
-        print("Tag was not found")
-      else:
-        if badContent == None:
-          print ("Tag was not found")
-        else:
-          print(badContent)
-
+  Podemos aplicar a mesma lógica para testar tags específicas de um objeto BS. Se a biblioteca tentar acessar uma tag inexistente na       página html ou XML, a mesma retornará um objeto do tipo None. Se tentarmos aplicar funções ou métodos à este objeto None, receberemos   um "Attribute Error". Reescrevendo o exemplo acima, controlando pelos quatro erros comentados:
+          from urllib.request import urlopen
+          from urllib.error import HTTPError
+          from bs4 import BeautifulSoup
+          def getTitle(url):
+            try:
+              html = urlopen(url)
+            except HTTPError as e:
+              return None
+            try:
+              bsObj = BeautifulSoup(html.read())
+              title = bsObj.body.h1
+            except AttributeError as e:
+              return None
+            return title
+          title = getTitle("http://www.pythonscraping.com/exercises/exercise1.html")
+          if title == None:
+            print("Title could not be found")
+          else:
+            print(title)
+________________________________________________________________________________________________________________________________________ Cap. 2 - Advanced HTML Parsing
