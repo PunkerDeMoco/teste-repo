@@ -47,6 +47,7 @@ ________________________________________________________________________________
    II) Caso o servidor não seja encontrado, a função urlopen retorna um objeto tipo None.  
 
    Podemos aplicar a mesma lógica para testar tags específicas de um objeto BS. Se a biblioteca tentar acessar uma tag inexistente na      página html ou XML, a mesma retornará um objeto do tipo None. Se tentarmos aplicar funções ou métodos à este objeto None,                receberemos   um "Attribute Error". Reescrevendo o exemplo acima, controlando pelos quatro erros comentados:
+   
            from urllib.request import urlopen
            from urllib.error import HTTPError
            from bs4 import BeautifulSoup
@@ -72,7 +73,7 @@ Cap. 2 - Advanced HTML Parsing
 
      html = urlopen("http://www.pythonscraping.com/pages/warandpeace.html")
      bsObj = BeautifulSoup(html)
-     names_list = bsObj.findAll("span", {"class":"green"}) #função .findALL extrair para uma lista todos os objetos que satisfazem os        argumentos  
+     names_list = bsObj.findAll("span", {"class":"green"}) #função .findALL(tagName, tagAttributes) extrai para uma lista todos os            objetos que satisfazem os argumentos  
      for name in names_list:
         print(name)
    
@@ -82,7 +83,7 @@ Cap. 2 - Advanced HTML Parsing
      <span class="green">Prince Vasili Kuragin</span>
      <span class="green">Anna Pavlovna</span>
    
-     Podemos printar apenas o texto de cada objeto, sem sua formatação:
+     Podemos printar apenas o texto de cada objeto separadamente de suas tags:
      for name in names_list:
         print(name.get_text())
         
@@ -93,5 +94,43 @@ Cap. 2 - Advanced HTML Parsing
      Fedorovna
      Prince Vasili Kuragin
      Anna Pavlovna
-     
+_______________________________________________________________________________________________________________________________________ 
+ * Other BeautifulSoup Objects
+  Além dos objetos estudados (bsObj e tag Objects), a biblioteca possui mais dois tipos de objetos:
+   NavigableString Object: Usado para representar texto em tags, em vez das próprias tags
+   The Comment Object: Usado para encontrar comentários HTML em tags de comentário, <!--como este-->
+_______________________________________________________________________________________________________________________________________ 
+ * Árvores de Navegação
+  São úteis quando precisamos encontrar tags com base em suas localizações em um documento.
+  
+  next_siblings e previous_siblings - funções adequeadas para extrair dados de tabelas, especialmente aquelas com linhas de título.
+     from urllib.request import urlopen
+     from bs4 import BeautifulSoup
+     html = urlopen("http://www.pythonscraping.com/pages/page3.html")
+     bsObj = BeautifulSoup(html)
+     for sibling in bsObj.find("table",{"id":"giftList"}).tr.next_siblings:
+       print(sibling)
+       
+  # O output do código imprimi todas as linhas de produtos da tabela de produtos, exceto para a primeira linha do título
+_______________________________________________________________________________________________________________________________________ 
+ * Expressões Regulares
+  A depender do caso, boa maneira de tratar textos regulares dentro de um documento (como possíveis endereços de email ou telefones)
+  Principais regras para expressões regulares: pgs. 50 - 52
+   Expressão regular para identificação de emails: [A-Za-z0-9\._+]+@[A-Za-z]+\.(com|org|edu|net)
+   
+  Também é possível usar as expressões regulares para buscar de maneira eficiente apenas as imagens que correspondem à cesta de produtos   do exemplo anterior:
+  images = bsObj.findAll("img", {"src":re.compile("\.\.\/img\/gifts/img.*\.jpg")})
+  for image in images:
+    print(image["src"])
+    
+  # Output: 
+  ../img/gifts/img1.jpg
+  ../img/gifts/img2.jpg
+  ../img/gifts/img3.jpg
+  ../img/gifts/img4.jpg
+  ../img/gifts/img6.jpg
+
+
+
+  
   
