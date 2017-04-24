@@ -129,8 +129,15 @@ ________________________________________________________________________________
   ../img/gifts/img3.jpg
   ../img/gifts/img4.jpg
   ../img/gifts/img6.jpg
-
-
-
+_______________________________________________________________________________________________________________________________________
+ * Funções Lambda
+  Nos permite passar uma função como variável de outra função. f(g(x), y), f(g(x), h(x)).
+  BeautifulSoup nos permite passar certos tipos de funções como parâmetros para a função findAll. A única restrição é que essas funções   devem ter um objeto tag como um argumento e retornar um valor boolean como output.
   
-  
+ * Outras bibiliotecas úteis
+  Além de BeautifulSoup, o Python possui outras bibliotecas para análise de arquivos HTML:
+  lmxl: analisa documentos HTML e XML e é conhecido por ser fortemente baseado em C e por sua rapidez de análise.
+  HTML Parser: biblioteca de análise integrada do Python. Como não requer instalação, pode ser extremamente conveniente.
+_______________________________________________________________________________________________________________________________________ 
+Cap. 3 - Starting to Crawl
+ 
