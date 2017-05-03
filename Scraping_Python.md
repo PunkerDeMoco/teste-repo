@@ -140,4 +140,31 @@ ________________________________________________________________________________
   HTML Parser: biblioteca de análise integrada do Python. Como não requer instalação, pode ser extremamente conveniente.
 _______________________________________________________________________________________________________________________________________ 
 Cap. 3 - Starting to Crawl
+ * É possível criar crawlers que fazem varreduras de págnas inteiras, mas estes processos são custosos em termos de memória.
+ Fazer a busca inteira de uma página pode ser válido em casos de:
+  - Necessidade de gerar um mapa do site
+  - Agrupar informações
+ De maneira geral, se começa por uma página "top-level", como a página inicial. Aqui, pesquisa-se todos os links internos da página.     
+ Cada um destes links é rastreado e uma lista de novos links é formada em cada página rastreada e assim sucessivamente.
+  # Obs: é importante sempre tomar cuidado com links duplicados em duas páginas ou mais. Apenas o links novos devem ser adicionados ao     rastreamento
+   from urllib.request import urlopen
+   from bs4 import BeautifulSoup
+   import re
+   pages = set()
+   def getLinks(pageUrl):
+    global pages
+    html = urlopen("http://en.wikipedia.org"+pageUrl)
+    bsObj = BeautifulSoup(html)
+    for link in bsObj.findAll("a", href=re.compile("^(/wiki/)")):
+      if 'href' in link.attrs:
+        if link.attrs['href'] not in pages:
+          '#We have encountered a new page
+          newPage = link.attrs['href']
+          print(newPage)
+          pages.add(newPage)
+          getLinks(newPage)
+  getLinks("")
+  
+  # Um aviso relativo à recursão
+  Se deixado em execução longa bastante, o script quase certamente falhará. Python tem um limite de recursão padrão (quantas vezes os programas podem recursivamente chamar-se) de 1.000 vezes. Como a rede de links da Wikipedia é extremamente grande, este programa acabará por atingir essa recursão limite e irá parar, a menos que você colocar em um contador de recursão ou algo para impedir que isso aconteça.
  
